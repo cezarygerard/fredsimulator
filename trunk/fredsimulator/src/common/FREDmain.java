@@ -20,7 +20,7 @@ public class FREDmain {
 		///tworzenie sieci testowej:
 		
 		Fred fred = new Fred(0, Timer.timer);
-		UDPSource udpSource = new UDPSource(1); 
+		UDPSource udpSource = new UDPSource(1, 5000000); 
 //		TCPSource tcpSource1 = new TCPSource(2); 
 //		TCPSource tcpSource2 = new TCPSource(3);
 		Sink sink = new Sink(4);
