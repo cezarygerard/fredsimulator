@@ -5,11 +5,13 @@ public class Timer {
 	private long time;
 
 	public long getTime() {
-		return time;
+		return timer.time;
 	}
 	
 	public long increment()
 	{
-		return ++time;
+		return ++timer.time;
 	}
+	
+	static Timer timer = new Timer();
 }

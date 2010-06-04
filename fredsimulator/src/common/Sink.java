@@ -13,4 +13,13 @@ public class Sink extends Node {
 		
 	}
 
+	public void enquePacket(Packet pckt) {
+		
+		
+		
+		if(pckt instanceof TCPPacket)
+		{
+			((TCPSource)pckt.sourceNode).handleAck(((TCPPacket)pckt).sequenceNumber);
+		}
+	}
 }

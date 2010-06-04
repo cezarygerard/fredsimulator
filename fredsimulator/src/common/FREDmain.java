@@ -9,8 +9,6 @@ public class FREDmain {
 	 * @param args
 	 */
 	
-	static Timer timer;
-	
 	static ArrayList<Node> nodes;
 	static ArrayList<Link> links;
 	
@@ -21,7 +19,7 @@ public class FREDmain {
 		links = new ArrayList<Link>();
 		///tworzenie sieci testowej:
 		
-		Fred fred = new Fred(0, timer);
+		Fred fred = new Fred(0, Timer.timer);
 		UDPSource udpSource = new UDPSource(1); 
 //		TCPSource tcpSource1 = new TCPSource(2); 
 //		TCPSource tcpSource2 = new TCPSource(3);
@@ -31,9 +29,11 @@ public class FREDmain {
 		nodes.add(sink);
 		Link link1 = new Link(udpSource, fred, 10000, 10 * 1000 * 1000);
 		Link link2 = new Link(fred, sink, 10000, 10 * 1000 * 1000);
+		links.add(link1);
+		links.add(link2);
 		long time = 0;
 
-		while ((time = timer.increment())<1 * seconds)
+		while ((time = Timer.timer.increment())<1 * seconds)
 		{
 			for (Iterator<Node> iterator = nodes.iterator(); iterator.hasNext();) {
 			Node node = (Node) iterator.next();
