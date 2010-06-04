@@ -8,7 +8,7 @@ public class Timer {
 		return timer.time;
 	}
 	
-	public static long increment()
+	static long increment()
 	{
 		return ++timer.time;
 	}

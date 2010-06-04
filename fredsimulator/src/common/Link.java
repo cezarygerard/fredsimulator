@@ -3,6 +3,7 @@
  */
 package common;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.LinkedList;
 
 /**
@@ -31,6 +32,18 @@ public class Link {
 	 */
 	private double bitrate;
 
+	/**
+	 * flaga oznaczajaca czy lacze jest zajete
+	 * {@link isBusy()}
+	 */
+	private boolean isBusy;
+	
+	
+	/**
+	 * czas za ile lacze bedzie wolne
+	 * wykorzystywane wewnatrz klasy do okreslenie czy lacze jest wolne
+	 */
+	private double timeTofree;
 	
 	private LinkedList<PacketTimePair> delayList;
 	
@@ -48,6 +61,8 @@ public class Link {
 		this.bitrate = d;
 		source.links.add(this);
 		destination.links.add(this);
+		isBusy =false;
+		timeTofree = 0;
 	}
 
 	/**
@@ -80,7 +95,12 @@ public class Link {
 	
 	public void placeInLink(Packet p)
 	{
-		delayList.add(new PacketTimePair(p));
+		if(isBusy = false)
+		{	
+			delayList.add(new PacketTimePair(p));
+			timeTofree = p.size / this.bitrate;
+		}
+		
 	}
 	
 	public void handle(long time)
@@ -90,7 +110,16 @@ public class Link {
 			{
 				destination.enquePacket(delayList.get(i).pckt);
 			}
-			
+		}
+		
+		if(timeTofree > 0 )
+		{
+			timeTofree--;
+			isBusy = true;
+		}
+		else
+		{
+			isBusy = false;
 		}
 	}
 
@@ -104,5 +133,12 @@ public class Link {
 			this.timeToWait = delay;
 			this.pckt = p;
 		}		
+	}
+	
+	/**
+	 * @return the isBusy
+	 */
+	public boolean isBusy() {
+		return isBusy;
 	}
 }
