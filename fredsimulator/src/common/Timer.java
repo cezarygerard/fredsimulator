@@ -4,14 +4,15 @@ public class Timer {
 
 	private long time;
 
-	public long getTime() {
+	public static long getTime() {
 		return timer.time;
 	}
 	
-	public long increment()
+	public static long increment()
 	{
 		return ++timer.time;
 	}
 	
+
 	static Timer timer = new Timer();
 }
