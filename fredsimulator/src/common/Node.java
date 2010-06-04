@@ -41,6 +41,11 @@ public abstract class Node {
 		else
 			return false;
 	}
+
+	public void enquePacket(Packet pckt) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

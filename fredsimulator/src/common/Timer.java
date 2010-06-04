@@ -8,8 +8,8 @@ public class Timer {
 		return time;
 	}
 	
-	public void increment()
+	public long increment()
 	{
-		time++;
+		return ++time;
 	}
 }
