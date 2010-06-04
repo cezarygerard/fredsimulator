@@ -1,13 +1,27 @@
 package common;
 
-public class main {
+public class FREDmain {
 
 	/**
 	 * @param args
 	 */
+	
+	Timer timer;
+	
+	
+	//
+	//
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
+		while (true)
+		{
+			
+			
+			
+			
+		}
 	}
 
 }
