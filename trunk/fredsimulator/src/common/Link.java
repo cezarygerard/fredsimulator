@@ -3,26 +3,49 @@
  */
 package common;
 
+import java.util.LinkedList;
+
 /**
  * @author czarek
  *
  */
 public class Link {
 
+	/**
+	 * 
+	 */
 	private Node source;
 	
-	private Node sink;
+	/**
+	 * 
+	 */
+	private Node destination;
 	
+	/**
+	 * in miliseconds
+	 */
 	private int delay;
 	
-	private long bitrate;
+	/**
+	 * bits/s
+	 */
+	private double bitrate;
 
-	public Link(Node source, Node destination, int delay, long bitrate) {
+	
+	private LinkedList<PacketTimePair> delayList;
+	
+	/**
+	 * @param source
+	 * @param destination
+	 * @param delay
+	 * @param d
+	 */
+	public Link(Node source, Node destination, int delay, double d) {
 		super();
 		this.source = source;
-		this.sink = destination;
+		this.destination = destination;
 		this.delay = delay;
-		this.bitrate = bitrate;
+		this.bitrate = d;
 		source.links.add(this);
 		destination.links.add(this);
 	}
@@ -37,8 +60,8 @@ public class Link {
 	/**
 	 * @return the sink
 	 */
-	public Node getSink() {
-		return sink;
+	public Node getDestination() {
+		return destination;
 	}
 
 	/**
@@ -51,8 +74,35 @@ public class Link {
 	/**
 	 * @return the bitrate
 	 */
-	public long getBitrate() {
+	public double getBitrate() {
 		return bitrate;
 	}
+	
+	public void placeInLink(Packet p)
+	{
+		delayList.add(new PacketTimePair(p));
+	}
+	
+	public void handle(long time)
+	{
+		for (int i = 0; i < delayList.size(); i++) {
+			if(--delayList.get(i).timeToWait <= 0)
+			{
+				destination.enquePacket(delayList.get(i).pckt);
+			}
+			
+		}
+	}
 
+	private class PacketTimePair
+	{
+		long timeToWait;
+		Packet pckt;
+		
+		public PacketTimePair(Packet p) {
+			super();
+			this.timeToWait = delay;
+			this.pckt = p;
+		}		
+	}
 }
