@@ -1,10 +1,14 @@
 package common;
 
+import java.util.ArrayList;
+
 public class Sink extends Node {
 
+	ArrayList<Packet> delayToAck;
+	
 	public Sink(int id) {
 		super(id);
-		// TODO Auto-generated constructor stub
+		delayToAck = new ArrayList<Packet> ();
 	}
 
 	@Override
@@ -14,12 +18,11 @@ public class Sink extends Node {
 	}
 
 	public void enquePacket(Packet pckt) {
-		
-		
-		
+			
 		if(pckt instanceof TCPPacket)
 		{
-			((TCPSource)pckt.sourceNode).handleAck(((TCPPacket)pckt).sequenceNumber);
+			delayToAck.add(pckt);
+//			((TCPSource)pckt.sourceNode).handleAck(((TCPPacket)pckt).sequenceNumber);
 		}
 	}
 }
