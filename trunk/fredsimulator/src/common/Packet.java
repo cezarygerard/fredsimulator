@@ -9,15 +9,15 @@ package common;
  */
 public abstract class Packet {
 
-	Node sourceNoude;
+	Node sourceNode;
 	
 //	Node destinationNode;
 	
 	int size;
 
-	public Packet(Node sourceNoude, int size) {
+	public Packet(Node sourceNode, int size) {
 		super();
-		this.sourceNoude = sourceNoude;
+		this.sourceNode = sourceNode;
 		this.size = size;
 	}
 
