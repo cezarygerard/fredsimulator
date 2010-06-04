@@ -9,8 +9,6 @@ import java.util.TreeMap;
  */
 
 public class TCPSource extends Node {
-
-	
 	
 	int windowSize;
 	
@@ -23,11 +21,13 @@ public class TCPSource extends Node {
 	
 	public TCPSource(int id) {
 		super(id);
-		// TODO Auto-generated constructor stub
+		window = new TreeMap<Long, Long>();
+		
+		
 	}
 
 	public void handle(long time) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	

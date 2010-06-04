@@ -8,6 +8,11 @@ package common;
  *
  */
 public class Constans {
+	
+	/**
+	 * rozdzielczosc zegara, oznacza ile jednostek zegara to 1 sekunda
+	 */
+	public static final double second = 1000*1000*1000; 
 
 	public static final double w_q = 0.02; // w jednostkach
 	
@@ -26,4 +31,10 @@ public class Constans {
 	public static final int tcp_packet_size = 1500; //w bajtach
 	
 	public static final int udp_packet_size = 1500; //w bajtach
+	
+	/**
+	 * poczatkowe okno w tcp, liczone jest w pakietach
+	 * 
+	 */
+	public static final int tcp_window = 1500;
 }
