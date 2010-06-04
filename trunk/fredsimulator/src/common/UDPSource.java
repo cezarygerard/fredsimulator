@@ -12,5 +12,10 @@ public class UDPSource extends Node {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	/**
+	 * w bit/s
+	 */
+	long bitrate;
+	
 }
