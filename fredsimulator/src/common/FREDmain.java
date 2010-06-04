@@ -14,7 +14,7 @@ public class FREDmain {
 	
 	public static void main(String[] args) {
 		
-		long seconds = 1000000;
+		//long seconds = 1000000;
 		nodes = new ArrayList<Node>();
 		links = new ArrayList<Link>();
 		///tworzenie sieci testowej:
@@ -27,13 +27,13 @@ public class FREDmain {
 		nodes.add(fred);
 		nodes.add(udpSource);
 		nodes.add(sink);
-		Link link1 = new Link(udpSource, fred, 10000, 10 * 1000 * 1000);
-		Link link2 = new Link(fred, sink, 10000, 10 * 1000 * 1000);
+		Link link1 = new Link(udpSource, fred, 10000,  (Constans.second)/100);
+		Link link2 = new Link(fred, sink, 10000, (Constans.second)/100);
 		links.add(link1);
 		links.add(link2);
 		long time = 0;
 
-		while ((time = Timer.timer.increment())<1 * seconds)
+		while ((time = Timer.increment())<1 * Constans.second)
 		{
 			for (Iterator<Node> iterator = nodes.iterator(); iterator.hasNext();) {
 			Node node = (Node) iterator.next();

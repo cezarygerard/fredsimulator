@@ -53,12 +53,12 @@ public class Link {
 	 * @param delay
 	 * @param d
 	 */
-	public Link(Node source, Node destination, int delay, double d) {
+	public Link(Node source, Node destination, int delay, double bitrate) {
 		super();
 		this.source = source;
 		this.destination = destination;
 		this.delay = delay;
-		this.bitrate = d;
+		this.bitrate = bitrate;
 		source.links.add(this);
 		destination.links.add(this);
 		isBusy =false;
@@ -98,7 +98,7 @@ public class Link {
 		if(isBusy = false)
 		{	
 			delayList.add(new PacketTimePair(p));
-			timeTofree = p.size / this.bitrate;
+			timeTofree = p.size / this.bitrate * Constans.second; 
 		}
 		
 	}
@@ -123,10 +123,10 @@ public class Link {
 		}
 	}
 
-	private class PacketTimePair
+	public class PacketTimePair
 	{
-		long timeToWait;
-		Packet pckt;
+		public long timeToWait;
+		public Packet pckt;
 		
 		public PacketTimePair(Packet p) {
 			super();
