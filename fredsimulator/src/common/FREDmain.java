@@ -15,8 +15,15 @@ public class FREDmain {
 
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
+		
+		
+		///tworzenie sieci testowej:
+		Fred fred = new Fred(0);
+		UDPSource udpSource = new UDPSource(1); 
+//		TCPSource tcpSource1 = new TCPSource(2); 
+//		TCPSource tcpSource2 = new TCPSource(3);
+		Sink sink = new Sink(4);
 		
 		
 		

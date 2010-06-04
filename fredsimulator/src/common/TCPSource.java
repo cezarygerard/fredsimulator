@@ -1,6 +1,12 @@
 package common;
 
+
 import java.util.TreeMap;
+
+/**
+ * @author czarek
+ *
+ */
 
 public class TCPSource extends Node {
 
@@ -9,7 +15,6 @@ public class TCPSource extends Node {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
 	public void handle(long time) {
 		// TODO Auto-generated method stub
 		
