@@ -11,6 +11,8 @@ public abstract class Packet {
 
 	Node sourceNoude;
 	
+//	Node destinationNode;
+	
 	int size;
 
 	public Packet(Node sourceNoude, int size) {
