@@ -21,7 +21,7 @@ public class FREDmain {
 		links = new ArrayList<Link>();
 		///tworzenie sieci testowej:
 		
-		Fred fred = new Fred(0);
+		Fred fred = new Fred(0, timer);
 		UDPSource udpSource = new UDPSource(1); 
 //		TCPSource tcpSource1 = new TCPSource(2); 
 //		TCPSource tcpSource2 = new TCPSource(3);
