@@ -9,7 +9,8 @@ import utils.Pair;
 public class Sink extends Node {
 
 	ArrayList<Pair<Long, Packet>> delayToAck;
-	FileWriter writer ;
+	FileWriter writer;
+
 	public Sink(int id) {
 		super(id);
 		delayToAck = new ArrayList<Pair<Long, Packet>>();
@@ -19,7 +20,7 @@ public class Sink extends Node {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	@Override
@@ -27,10 +28,35 @@ public class Sink extends Node {
 		for (int i = 0; i < delayToAck.size(); i++) {
 			Pair<Long, Packet> element = delayToAck.get(i);
 			if (element.first <= time) {
-				System.out.println(this + " handle element: " + element.first +  "   "+ element.second);
 				((TCPSource) element.second.sourceNode)
 						.handleAck(((TCPPacket) element.second).sequenceNumber);
 				delayToAck.remove(i);
+				if (element.second instanceof TCPPacket) {
+					System.out.println(this
+							+ " handle element: "
+							+ element.first
+							+ "   "
+							+ element.second
+							+ "source_window_size"
+							+ ((TCPSource) element.second.sourceNode)
+									.getWindowSize());
+					try {
+						writer.write(this
+								+ " handle element: "
+								+ element.first
+								+ "   "
+								+ element.second
+								+ "source_window_size"
+								+ ((TCPSource) element.second.sourceNode)
+										.getWindowSize());
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					System.out.println(this + " handle element: "
+							+ element.first + "   " + element.second);
+				}
 			}
 		}
 	}
@@ -38,7 +64,8 @@ public class Sink extends Node {
 	public void enquePacket(Packet pckt) {
 		System.out.println(this.getClass() + " przyszedl pakiet: " + pckt);
 		try {
-			writer.write("\n" + Timer.getTime() + "  " + this.getClass() + " przyszedl pakiet: " + pckt);
+			writer.write("\n" + Timer.getTime() + "  " + this.getClass()
+					+ " przyszedl pakiet: " + pckt);
 			writer.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

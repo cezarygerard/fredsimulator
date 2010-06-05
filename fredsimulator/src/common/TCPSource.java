@@ -12,7 +12,7 @@ import java.util.TreeSet;
 
 public class TCPSource extends Node {
 	
-	int windowSize;
+	private int windowSize;
 	
 	Long sequenceNumber;
 
@@ -101,6 +101,13 @@ public class TCPSource extends Node {
 			sentPackets.clear();
 			ackedPackets.clear();
 		}
+	}
+	
+	/**
+	 * @return the windowSize
+	 */
+	public int getWindowSize() {
+		return windowSize;
 	}
 }
 
