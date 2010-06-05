@@ -71,7 +71,7 @@ public class Link implements Comparable<Link> {
 	}
 
 	private void init() {
-		System.out.println(this + "  " + this.getClass());
+	//	System.out.println(this + "  " + this.getClass());
 		source.links.add(this);
 		destination.links.add(this);
 	}
@@ -105,11 +105,13 @@ public class Link implements Comparable<Link> {
 	}
 
 	public void placeInLink(Packet p) throws Exception {
+		//System.out.println(this + " time: " + Timer.getTime() + " placeInLink "+ p);
 		if (p != null) {
 			if (isBusy == false) {
 				delayList.add(new Pair<Long, Packet>(new Long(
 						delay), p));
 				timeTofree = p.size / this.bitrate * Constans.second;
+			//	System.out.println(this + " placeInLink " + timeTofree);
 			} else {
 				throw new Exception(
 						"Lacze zajete - trwa wysylanie innego pakietu");
@@ -120,7 +122,9 @@ public class Link implements Comparable<Link> {
 	public void handle(long time) {
 		for (int i = 0; i < delayList.size(); i++) {
 			if (--(delayList.get(i).first) <= 0) {
+				System.out.println(this + " handle "+ delayList.get(i).first + " packet: " + delayList.get(i).first);
 				destination.enquePacket(delayList.get(i).second);
+				delayList.remove(i);
 			}
 		}
 
@@ -136,6 +140,7 @@ public class Link implements Comparable<Link> {
 	 * @return the isBusy
 	 */
 	public boolean isBusy() {
+	//	System.out.println(this + " isBusy " + isBusy + " ttf: " + timeTofree);
 		return isBusy;
 	}
 

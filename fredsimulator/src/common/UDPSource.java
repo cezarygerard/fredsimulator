@@ -14,6 +14,7 @@ public class UDPSource extends Node {
 			UDPPacket packet = new UDPPacket(this, Constans.udp_packet_size);
 			if(!links.first().isBusy())
 			{//jezeli link jest wolny
+				System.out.println(this + " sendPacket");
 				try {
 					links.first().placeInLink(packet);
 				} catch (Exception e) {

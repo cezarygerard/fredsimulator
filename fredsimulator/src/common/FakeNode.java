@@ -14,9 +14,12 @@ import java.util.LinkedList;
 public class FakeNode extends Node {
 
 	LinkedList<Packet> queue;
-
+	private static final int queueSize = 32;
+	
 	public void enquePacket(Packet pckt) {
-		queue.add(pckt);
+		System.out.println(this + " enquePacket ");
+		if(queueSize > queue.size())
+			queue.add(pckt);
 	}
 
 	public FakeNode(int nodeId) {
@@ -31,15 +34,16 @@ public class FakeNode extends Node {
 			return;
 		Link linkToSink = null;
 		for (Iterator<Link> iterator = links.iterator(); iterator.hasNext();) {
-			Link l = (Link) iterator.next();
-			if(l.getDestination().getId() == 4)
+			Link lnk = (Link) iterator.next();
+			if(lnk.getDestination().getId() == 4)
 			{
-				linkToSink = l;
+				linkToSink = lnk;
 				break;
 			}
 			
 		}
 		if (!linkToSink.isBusy()) {// jezeli link jest wolny
+			System.out.println(this + " handle linkToSink.isBusy()?? " + linkToSink.isBusy());
 			try {
 				linkToSink.placeInLink(packet);
 			} catch (Exception e) {
