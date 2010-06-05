@@ -3,7 +3,6 @@
  */
 package common;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -14,7 +13,7 @@ import java.util.LinkedList;
 public class FakeNode extends Node {
 
 	LinkedList<Packet> queue;
-	private static final int queueSize = 32;
+	private static final int queueSize = 64;
 	
 	public void enquePacket(Packet pckt) {
 		System.out.println(this + " enquePacket ");
