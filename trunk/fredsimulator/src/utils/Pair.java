@@ -1,8 +1,8 @@
 package utils;
 
 public class Pair<A, B> {
-    private A first;
-    private B second;
+	public A first;
+    public B second;
 
     public Pair(A first, B second) {
         super();

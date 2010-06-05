@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package common;
 
 import java.util.TreeSet;
@@ -20,7 +18,7 @@ public abstract class Node {
 
 	public Node(int nodeId) {
 		super();
-
+		links = new TreeSet<Link>();
 		this.id = nodeId;
 	}
 
