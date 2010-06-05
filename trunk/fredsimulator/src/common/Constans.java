@@ -20,9 +20,9 @@ public class Constans {
 	
 	public static final int rtt = (int) (second / 25) ; //w us
 	
-	public static final double min_th = Math.min(rtt/1000, buffer_size); // w pakietach
+	public static final long min_th = Math.min(rtt/1000, buffer_size); // w pakietach
 	
-	public static final double max_th = 2* min_th; // w pakietach
+	public static final long max_th = 2* min_th; // w pakietach
 	
 	public static final double max_p = 0.02; //w jednostkach
 	
