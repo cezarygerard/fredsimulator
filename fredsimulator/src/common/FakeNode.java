@@ -13,24 +13,24 @@ import java.util.LinkedList;
 public class FakeNode extends Node {
 
 	LinkedList<Packet> queue;
+	
 	private static final int queueSize = 64;
 	
-	public void enquePacket(Packet pckt) {
-		System.out.println(this + " enquePacket ");
-		if(queueSize > queue.size())
-			queue.add(pckt);
-	}
-
 	public FakeNode(int nodeId) {
 		super(nodeId);
 		queue = new LinkedList<Packet>();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void enquePacket(Packet pckt) {
+		System.out.println(this + " enquePacket " + pckt);
+		if(queueSize > queue.size())
+			queue.add(pckt);
+	}
+
 
 	public void handle(long time) {
-		Packet packet = queue.poll();
-		if(packet == null)
-			return;
+
 		Link linkToSink = null;
 		for (Iterator<Link> iterator = links.iterator(); iterator.hasNext();) {
 			Link lnk = (Link) iterator.next();
@@ -42,7 +42,11 @@ public class FakeNode extends Node {
 			
 		}
 		if (!linkToSink.isBusy()) {// jezeli link jest wolny
-			System.out.println(this + " handle linkToSink.isBusy()?? " + linkToSink.isBusy());
+			Packet packet = queue.poll();
+			if (packet  == null)
+				return;
+			
+			System.out.println(this + " handle " + packet);
 			try {
 				linkToSink.placeInLink(packet);
 			} catch (Exception e) {
