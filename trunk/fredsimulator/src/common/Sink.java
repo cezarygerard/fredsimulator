@@ -40,6 +40,7 @@ public class Sink extends Node {
 		System.out.println(this.getClass() + " przyszedl pakiet: " + pckt);
 		try {
 			writer.write("\n" + Timer.getTime() + "  " + this.getClass() + " przyszedl pakiet: " + pckt);
+			writer.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

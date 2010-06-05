@@ -76,6 +76,8 @@ public class TCPSource extends Node {
 		windowSize = (2 > windowSize/2 ? 2: windowSize/2 );
 		try{
 			sequenceNumber = sentPackets.firstKey();
+			sentPackets.clear();
+			ackedPackets.clear();
 		}
 		catch (Exception e) {
 			System.out.println("sequenceNumber " + sequenceNumber);
@@ -90,6 +92,15 @@ public class TCPSource extends Node {
 		if(sentPackets.remove(sn) != null)
 		{//jezeli pakiet jest w sentPackets to nie minal timeout
 			ackedPackets.add(sn);
-		}					
+		}
+		System.out.println(this + " ackedPackets.size() " + ackedPackets.size() + " windowSize "+ windowSize + " sentPackets.size() " + sentPackets.size());
+		if(ackedPackets.size() == windowSize && sentPackets.size() == 0)
+		{//potwierdzono wszystkie z okna
+			windowSize++;
+			sentPackets.clear();
+			ackedPackets.clear();
+		}
 	}
 }
+
+
