@@ -3,50 +3,53 @@
  */
 package common;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.LinkedList;
+
+import utils.Pair;
 
 /**
  * @author czarek
- *
+ * 
  */
-public class Link {
+public class Link implements Comparable<Link> {
 
 	/**
 	 * 
 	 */
 	private Node source;
-	
+
 	/**
 	 * 
 	 */
 	private Node destination;
-	
+
 	/**
 	 * in miliseconds
 	 */
 	private int delay;
-	
+
 	/**
 	 * bits/s
 	 */
 	private double bitrate;
 
 	/**
-	 * flaga oznaczajaca czy lacze jest zajete
-	 * {@link isBusy()}
+	 * flaga oznaczajaca czy lacze jest zajete {@link isBusy()}
 	 */
 	private boolean isBusy;
-	
-	
+
 	/**
-	 * czas za ile lacze bedzie wolne
-	 * wykorzystywane wewnatrz klasy do okreslenie czy lacze jest wolne
+	 * czas za ile lacze bedzie wolne wykorzystywane wewnatrz klasy do
+	 * okreslenie czy lacze jest wolne
 	 */
 	private double timeTofree;
-	
-	private LinkedList<PacketTimePair> delayList;
-	
+
+	/**
+	 * tutaj odbywa sie opoznienie pierwszy parametr pary to czas jaki ma
+	 * jeszcze spedzic tu pakiet
+	 */
+	private LinkedList<Pair<Long, Packet>> delayList;
+
 	/**
 	 * @param source
 	 * @param destination
@@ -61,8 +64,16 @@ public class Link {
 		this.bitrate = bitrate;
 		source.links.add(this);
 		destination.links.add(this);
-		isBusy =false;
+		isBusy = false;
 		timeTofree = 0;
+		delayList = new LinkedList<Pair<Long, Packet>>();
+		init();
+	}
+
+	private void init() {
+		System.out.println(this + "  " + this.getClass());
+		source.links.add(this);
+		destination.links.add(this);
 	}
 
 	/**
@@ -92,53 +103,54 @@ public class Link {
 	public double getBitrate() {
 		return bitrate;
 	}
-	
-	public void placeInLink(Packet p)
-	{
-		if(isBusy = false)
-		{	
-			delayList.add(new PacketTimePair(p));
-			timeTofree = p.size / this.bitrate * Constans.second; 
-		}
-		
-	}
-	
-	public void handle(long time)
-	{
-		for (int i = 0; i < delayList.size(); i++) {
-			if(--delayList.get(i).timeToWait <= 0)
-			{
-				destination.enquePacket(delayList.get(i).pckt);
+
+	public void placeInLink(Packet p) throws Exception {
+		if (p != null) {
+			if (isBusy == false) {
+				delayList.add(new Pair<Long, Packet>(new Long(
+						delay), p));
+				timeTofree = p.size / this.bitrate * Constans.second;
+			} else {
+				throw new Exception(
+						"Lacze zajete - trwa wysylanie innego pakietu");
 			}
 		}
-		
-		if(timeTofree > 0 )
-		{
+	}
+
+	public void handle(long time) {
+		for (int i = 0; i < delayList.size(); i++) {
+			if (--(delayList.get(i).first) <= 0) {
+				destination.enquePacket(delayList.get(i).second);
+			}
+		}
+
+		if (timeTofree > 0) {
 			timeTofree--;
 			isBusy = true;
-		}
-		else
-		{
+		} else {
 			isBusy = false;
 		}
 	}
 
-	public class PacketTimePair
-	{
-		public long timeToWait;
-		public Packet pckt;
-		
-		public PacketTimePair(Packet p) {
-			super();
-			this.timeToWait = delay;
-			this.pckt = p;
-		}		
-	}
-	
 	/**
 	 * @return the isBusy
 	 */
 	public boolean isBusy() {
 		return isBusy;
+	}
+
+	@Override
+	public int compareTo(Link o) {
+		if (this.source.getId() < o.source.getId()) {
+			return -1;
+		} else if (this.source.getId() > o.source.getId()) {
+			return 1;
+		} else if (this.destination.getId() < o.destination.getId()) {
+			return -1;
+		} else if (this.destination.getId() < o.destination.getId()) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 }

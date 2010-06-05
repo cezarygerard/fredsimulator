@@ -23,5 +23,11 @@ public abstract class Packet {
 
 
 	
+	public String toString() {
+		return "Packet: " + this.getClass() + " sourceNode: " + sourceNode;
+	}
+
+
+	
 	
 }
