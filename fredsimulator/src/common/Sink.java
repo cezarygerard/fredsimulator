@@ -41,7 +41,7 @@ public class Sink extends Node {
 							+ ((TCPSource) element.second.sourceNode)
 									.getWindowSize());
 					try {
-						writer.write(this
+						writer.write("\n" + this
 								+ " handle element: "
 								+ element.first
 								+ "   "
