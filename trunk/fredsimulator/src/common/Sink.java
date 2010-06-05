@@ -1,5 +1,7 @@
 package common;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import utils.Pair;
@@ -7,10 +9,18 @@ import utils.Pair;
 public class Sink extends Node {
 
 	ArrayList<Pair<Long, Packet>> delayToAck;
-
+	FileWriter writer ;
 	public Sink(int id) {
 		super(id);
 		delayToAck = new ArrayList<Pair<Long, Packet>>();
+		try {
+			writer = new FileWriter("logfile.txt");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int i = 5;
+		i++;
 	}
 
 	@Override
@@ -28,6 +38,12 @@ public class Sink extends Node {
 
 	public void enquePacket(Packet pckt) {
 		System.out.println(this.getClass() + " przyszedl pakiet: " + pckt);
+		try {
+			writer.write("\n" + Timer.getTime() + "  " + this.getClass() + " przyszedl pakiet: " + pckt);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if (pckt instanceof TCPPacket) {
 			// uwaga, tutaj od razu dodawany jest znacznik - czas w ktorym ma
 			// byc wywolane ack
