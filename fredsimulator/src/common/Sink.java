@@ -17,7 +17,7 @@ public class Sink extends Node {
 	public void handle(long time) {
 		for (int i = 0; i < delayToAck.size(); i++) {
 			Pair<Long, Packet> element = delayToAck.get(i);
-			if (element.first >= time) {
+			if (element.first <= time) {
 				System.out.println(this + " handle element: " + element.first +  "   "+ element.second);
 				((TCPSource) element.second.sourceNode)
 						.handleAck(((TCPPacket) element.second).sequenceNumber);

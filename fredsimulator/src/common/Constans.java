@@ -36,5 +36,5 @@ public class Constans {
 	 * poczatkowe okno w tcp, liczone jest w pakietach
 	 * 
 	 */
-	public static final int tcp_window = 1500;
+	public static final int tcp_window = (int) 65536 / 1500;
 }
