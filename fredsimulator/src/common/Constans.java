@@ -18,7 +18,7 @@ public class Constans {
 	
 	public static final int buffer_size = 32; //w pakietach
 	
-	public static final int rtt = 40000; //w us
+	public static final int rtt = (int) (second / 25) ; //w us
 	
 	public static final double min_th = Math.min(rtt/1000, buffer_size); // w pakietach
 	
