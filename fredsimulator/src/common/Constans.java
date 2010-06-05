@@ -12,7 +12,7 @@ public class Constans {
 	/**
 	 * rozdzielczosc zegara, oznacza ile jednostek zegara to 1 sekunda
 	 */
-	public static final double second = 1000*1000*1000; 
+	public static final double second = 1000*1000; 
 
 	public static final double w_q = 0.02; // w jednostkach
 	
