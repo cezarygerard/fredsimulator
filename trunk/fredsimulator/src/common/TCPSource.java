@@ -40,8 +40,7 @@ public class TCPSource extends Node {
 	public void handle(long time) {
 		for (Iterator<Long> iterator = sentPackets.keySet().iterator(); iterator.hasNext();) {
 			long seq = (Long) iterator.next();
-			long t = sentPackets.get(seq);
-			if(--t < 0)
+			if(  sentPackets.get(seq) < time )
 			{
 				System.out.println(this + "handle slowdown");
 				slowDown();
@@ -65,7 +64,7 @@ public class TCPSource extends Node {
 			System.out.println(this + " sendPacket " + " sentPackets " + sentPackets + " ackedPackets " + ackedPackets + Timer.getTime());
 			try {
 				links.first().placeInLink(packet);
-				sentPackets.put(packet.sequenceNumber,(long) Constans.rtt * 2);
+				sentPackets.put(packet.sequenceNumber,(long) Timer.getTime() + Constans.rtt * 2);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
