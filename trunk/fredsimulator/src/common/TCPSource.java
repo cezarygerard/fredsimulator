@@ -1,6 +1,7 @@
 package common;
 
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -48,11 +49,15 @@ public class TCPSource extends Node {
 			}			
 		}
 		
-		if(sentPackets.size() + ackedPackets.size() < windowSize)
+/*		if(sentPackets.size() + ackedPackets.size() < windowSize)
 		{//jezeli jeszcze nie przekroczono okna
 			sendPacket();
 		}
-		
+	*/
+		if(sentPackets.size()< windowSize)
+		{//jezeli jeszcze nie przekroczono okna
+			sendPacket();
+		}
 		
 	}
 	
@@ -95,12 +100,33 @@ public class TCPSource extends Node {
 			ackedPackets.add(sn);
 		}
 		System.out.println(this + " ackedPackets.size() " + ackedPackets.size() + " windowSize "+ windowSize + " sentPackets.size() " + sentPackets.size());
-		if(ackedPackets.size() == windowSize && sentPackets.size() == 0)
+/*		if(ackedPackets.size() == windowSize && sentPackets.size() == 0)
 		{//potwierdzono wszystkie z okna
 			windowSize++;
 			sentPackets.clear();
 			ackedPackets.clear();
 		}
+*/
+		if(ackedPackets.size() == windowSize)
+		{
+			boolean windowAckped = true;
+			Long[] ackedList =	ackedPackets.toArray(new Long[0]);
+			for (int i = 0; i < ackedList.length; i++) {
+				if(ackedList[i] > sentPackets.firstKey())
+				{
+					windowAckped = false;
+					break;
+				}
+			}
+			
+			if(windowAckped)
+			{
+				System.out.println(this + " windowAckped. sentPackets: " + sentPackets + "  ackedPackets: " + ackedPackets);  
+				ackedPackets.clear();
+				windowSize++;
+			}
+		}
+		
 	}
 	
 	/**
