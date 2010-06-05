@@ -78,6 +78,7 @@ public class TCPSource extends Node {
 			sequenceNumber = sentPackets.firstKey();
 			sentPackets.clear();
 			ackedPackets.clear();
+			System.out.println(this + " slowDown sequenceNumber " + sequenceNumber + " windowSize " + windowSize);
 		}
 		catch (Exception e) {
 			System.out.println("sequenceNumber " + sequenceNumber);
