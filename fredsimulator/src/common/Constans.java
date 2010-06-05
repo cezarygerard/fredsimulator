@@ -38,5 +38,5 @@ public class Constans {
 	 */
 	public static final int tcp_window = (int) 65536 / 1500;
 
-	public static final double linkDelayVariation = 0.001 ;
+	public static final double linkDelayVariation = 0.0025 ;
 }

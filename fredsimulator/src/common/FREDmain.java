@@ -40,7 +40,7 @@ public class FREDmain {
 		links.add(link4);
 		long time = 0;
 
-		while ((time = Timer.increment())<1 * Constans.second)
+		while ((time = Timer.increment())<10 * Constans.second)
 		{
 			for (Iterator<Node> iterator = nodes.iterator(); iterator.hasNext();) {
 			Node node = (Node) iterator.next();

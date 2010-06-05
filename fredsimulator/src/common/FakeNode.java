@@ -23,7 +23,7 @@ public class FakeNode extends Node {
 	}
 	
 	public void enquePacket(Packet pckt) {
-		System.out.println(this + " enquePacket " + pckt + " aktualny rozmiar kolejki: " + queueSize);
+		System.out.println(this + " enquePacket " + pckt + " aktualny rozmiar kolejki: " + queue.size());
 		if(queueSize > queue.size())
 			queue.add(pckt);
 	}
