@@ -14,7 +14,7 @@ public class FakeNode extends Node {
 
 	LinkedList<Packet> queue;
 	
-	private static final int queueSize = 64;
+	private static final int queueSize = 16;
 	
 	public FakeNode(int nodeId) {
 		super(nodeId);
@@ -23,7 +23,7 @@ public class FakeNode extends Node {
 	}
 	
 	public void enquePacket(Packet pckt) {
-		System.out.println(this + " enquePacket " + pckt);
+		System.out.println(this + " enquePacket " + pckt + " aktualny rozmiar kolejki: " + queueSize);
 		if(queueSize > queue.size())
 			queue.add(pckt);
 	}

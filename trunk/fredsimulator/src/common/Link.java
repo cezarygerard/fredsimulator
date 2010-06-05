@@ -4,6 +4,7 @@
 package common;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 import utils.Pair;
 
@@ -49,6 +50,11 @@ public class Link implements Comparable<Link> {
 	 * jeszcze spedzic tu pakiet
 	 */
 	private LinkedList<Pair<Long, Packet>> delayList;
+	
+	/**
+	 * sluzy do wprowadzenia jakiejs losowosci - tak aby scenariusze mogly sie troche roznic
+	 */
+	Random rand;
 
 	/**
 	 * @param source
@@ -67,6 +73,7 @@ public class Link implements Comparable<Link> {
 		isBusy = false;
 		timeTofree = 0;
 		delayList = new LinkedList<Pair<Long, Packet>>();
+		rand = new Random();
 		init();
 	}
 
@@ -110,8 +117,10 @@ public class Link implements Comparable<Link> {
 			if (isBusy == false) {
 				delayList.add(new Pair<Long, Packet>(new Long(
 						delay), p));
-				timeTofree = 8 * p.size * Constans.second / this.bitrate ;
-			//	System.out.println(this + " placeInLink " + timeTofree);
+				int ranV = rand.nextInt() %(int)( delay * Constans.linkDelayVariation);
+				timeTofree = 8 * p.size * Constans.second / this.bitrate + ranV;
+				int i;
+				i=5;
 			} else {
 				throw new Exception(
 						"Lacze zajete - trwa wysylanie innego pakietu");
