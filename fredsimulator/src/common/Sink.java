@@ -19,8 +19,7 @@ public class Sink extends Node {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		int i = 5;
-		i++;
+		
 	}
 
 	@Override
