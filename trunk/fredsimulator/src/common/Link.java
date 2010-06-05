@@ -110,7 +110,7 @@ public class Link implements Comparable<Link> {
 			if (isBusy == false) {
 				delayList.add(new Pair<Long, Packet>(new Long(
 						delay), p));
-				timeTofree = p.size / this.bitrate * Constans.second;
+				timeTofree = 8 * p.size / this.bitrate * Constans.second;
 			//	System.out.println(this + " placeInLink " + timeTofree);
 			} else {
 				throw new Exception(
