@@ -43,6 +43,7 @@ public class TCPSource extends Node {
 			long t = sentPackets.get(seq);
 			if(--t < 0)
 			{
+				System.out.println(this + "handle slowdown");
 				slowDown();
 				return;
 			}			
@@ -57,11 +58,14 @@ public class TCPSource extends Node {
 	}
 	
 	private void sendPacket() {
-		TCPPacket packet = new TCPPacket(this, Constans.tcp_packet_size,sequenceNumber++);
+		
 		if(!links.first().isBusy())
 		{//jezeli link jest wolny
+			TCPPacket packet = new TCPPacket(this, Constans.tcp_packet_size,sequenceNumber++);
+			System.out.println(this + " sendPacket " + " sentPackets " + sentPackets + " ackedPackets " + ackedPackets + Timer.getTime());
 			try {
 				links.first().placeInLink(packet);
+				sentPackets.put(packet.sequenceNumber,(long) Constans.rtt * 2);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
