@@ -16,8 +16,11 @@ public class Fred extends Node {
 	long avgcq; //average per-flow queue size
 	long max_q; //maximum allowed per-flow queue size
 	int Nactive;  // number of active flows
+	long q_time;
+	Link outLink; // link ktory wychodzi z wezla fred
 	//Timer timer;
 	
+	int modulo;
 	LinkedList<Packet> buffer;
 	TreeMap<Integer, Flow> flows; // klucz to id source'a
 	
@@ -34,7 +37,7 @@ public class Fred extends Node {
 	}
 	
 	
-	public Fred(int id, Timer timer) {
+	public Fred(int id) {
 		super(id);
 		q=0;
 		avg=0;
@@ -42,12 +45,41 @@ public class Fred extends Node {
 		avgcq=0;
 		max_q=0;
 		Nactive=0;
-		// TODO Auto-generated constructor stub
+		q_time=0;
+		outLink=null;
+		buffer = new LinkedList<Packet>();
+		flows = new TreeMap<Integer, Flow>();
+		//pole modulo ustawiane jest na taka wartosc aby wezel FRED obsugiwal jeden pakiet co 2us
+		modulo = (int) (Constans.second/500000); 
 	}
 
 	@Override
 	public void handle(long time) {
-		// TODO Auto-generated method stub
+		if(outLink == null){
+			Link temp = links.first();
+			boolean while_flag = true;
+			while(while_flag && temp!=null){
+				if (temp.getSource().equals(this)){
+					while_flag=false;
+					outLink=temp;
+				} else{
+					temp = links.higher(temp);
+				}
+			}
+			if (temp == null){System.out.println("cos tu nie gra....");}			
+		}
+		if(Timer.getTime()% modulo == 0 && !outLink.isBusy() && buffer.size()!=0){
+			Packet departingPacket = buffer.poll();
+			q--;
+			departPacket(departingPacket);
+
+				System.out.println(this + " sendPacket");
+				try {
+					links.first().placeInLink(departingPacket);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+		}
 		
 	}
 	
@@ -55,9 +87,9 @@ public class Fred extends Node {
 		return P.sourceNode.getId();
 	}
 	
-	public long getTime(){
-		return Timer.getTime();
-	}
+	//public long getTime(){
+		//return Timer.getTime();
+	//}
 
 	/** Metoda tworzaca nowy flow
 	 * @param p pakiet dla ktorego trzeba stworzyc flow
@@ -73,7 +105,11 @@ public class Fred extends Node {
 		if(q!=0 || departingPacket){
 			avg = (long) ((1-Constans.w_q)*avg + Constans.w_q*q);
 		} else{
-			//tutaj nie wiem jeszcze co wpisac
+			int i=fTime();
+			for(; i>0; i--){
+				avg = (long) ((1-Constans.w_q)*avg + Constans.w_q*q);
+			}
+			q_time = Timer.getTime();
 		}
 		if (Nactive!=0){
 			avgcq = avg/Nactive;
@@ -83,7 +119,7 @@ public class Fred extends Node {
 		avgcq= Math.max(avgcq, 1);
 		
 		if(q==0 && departingPacket){
-			//tutaj nie wiem jeszcze co wpisac
+			q_time = Timer.getTime();
 		}
 	}
 	
@@ -91,8 +127,31 @@ public class Fred extends Node {
 		
 	}
 	
-	private void acceptPacket(Packet p){
+	private void acceptPacket(Packet pckt){
+		buffer.add(pckt);
+		q++;
+	}
+	
+	private int fTime(){
+		long timeDifference = Timer.getTime()-q_time;
+		int result = (int) (timeDifference/Constans.second*outLink.getBitrate()/Constans.udp_packet_size);
+		return result;
+	}
+	
+	private void departPacket(Packet pckt){
+		calculateAvg(true);
+		int packetId = pckt.sourceNode.getId();
+		Flow packetFlow = flows.get(packetId);
 		
+		try {
+			if (packetFlow.qlen_i == 0){
+				Nactive--;
+				flows.remove(packetId);		
+			}
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**moja funkcja do liczenia jednego gowienka, trzeba obgadac z gerim
