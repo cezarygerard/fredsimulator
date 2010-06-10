@@ -1,5 +1,7 @@
 package common;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
@@ -20,6 +22,7 @@ public class Fred extends Node {
 	Link outLink; // link ktory wychodzi z wezla fred
 	//Timer timer;
 	
+
 	int modulo;
 	LinkedList<Packet> buffer;
 	TreeMap<Integer, Flow> flows; // klucz to id source'a
@@ -51,6 +54,8 @@ public class Fred extends Node {
 		flows = new TreeMap<Integer, Flow>();
 		//pole modulo ustawiane jest na taka wartosc aby wezel FRED obsugiwal jeden pakiet co 2us
 		modulo = (int) (Constans.second/500000); 
+		
+
 	}
 
 	@Override
@@ -68,7 +73,7 @@ public class Fred extends Node {
 			}
 			if (temp == null){System.out.println("cos tu nie gra....");}			
 		}
-		if(Timer.getTime()% modulo == 0 && !outLink.isBusy() && buffer.size()!=0){
+		if(Timer.getTime()% modulo == 0 && !outLink.isBusy() && !buffer.isEmpty()){
 			Packet departingPacket = buffer.poll();
 			q--;
 			departPacket(departingPacket);
@@ -81,6 +86,22 @@ public class Fred extends Node {
 				}
 		}
 		
+	}
+	
+	private void departPacket(Packet pckt){
+		calculateAvg(true);
+		int packetId = pckt.sourceNode.getId();
+		Flow packetFlow = flows.get(packetId);
+		packetFlow.qlen_i--;
+		try {
+			if (packetFlow.qlen_i == 0){
+				Nactive--;
+				flows.remove(packetId);		
+			}
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public int getConnectionIdFromPacket(Packet P){
@@ -129,6 +150,9 @@ public class Fred extends Node {
 	
 	private void acceptPacket(Packet pckt){
 		buffer.add(pckt);
+		//packetFlow = 
+		int packetId = pckt.sourceNode.getId();
+		flows.get(packetId).qlen_i++;
 		q++;
 	}
 	
@@ -138,21 +162,7 @@ public class Fred extends Node {
 		return result;
 	}
 	
-	private void departPacket(Packet pckt){
-		calculateAvg(true);
-		int packetId = pckt.sourceNode.getId();
-		Flow packetFlow = flows.get(packetId);
-		
-		try {
-			if (packetFlow.qlen_i == 0){
-				Nactive--;
-				flows.remove(packetId);		
-			}
-		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 	
 	/**moja funkcja do liczenia jednego gowienka, trzeba obgadac z gerim
 	 * @param p_a p_a
