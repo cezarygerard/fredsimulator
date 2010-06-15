@@ -17,13 +17,11 @@ public class Sink extends Node {
 		try {
 			writer = new FileWriter("logfile.txt");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
 	}
 
-	@Override
 	public void handle(long time) {
 		for (int i = 0; i < delayToAck.size(); i++) {
 			Pair<Long, Packet> element = delayToAck.get(i);
