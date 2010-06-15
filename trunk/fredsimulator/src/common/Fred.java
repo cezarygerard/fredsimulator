@@ -13,9 +13,9 @@ public class Fred extends Node {
 
 	int q; //current queue size
 	long time; // current "real" time
-	long avg; // average queue size
+	double avg; // average queue size
 	int count; //number of packets since last drop
-	long avgcq; //average per-flow queue size
+	double avgcq; //average per-flow queue size
 	long max_q; //maximum allowed per-flow queue size
 	int Nactive;  // number of active flows
 	long q_time;
@@ -73,7 +73,8 @@ public class Fred extends Node {
 			}
 			if (temp == null){System.out.println("cos tu nie gra....");}			
 		}
-		if(Timer.getTime()% modulo == 0 && !outLink.isBusy() && !buffer.isEmpty()){
+	//	if(Timer.getTime()% modulo == 0 && !outLink.isBusy() && !buffer.isEmpty()){
+		if(!outLink.isBusy() && !buffer.isEmpty()){
 			Packet departingPacket = buffer.poll();
 			q--;
 			departPacket(departingPacket);
@@ -124,11 +125,11 @@ public class Fred extends Node {
 	
 	private void calculateAvg(boolean departingPacket){
 		if(q!=0 || departingPacket){
-			avg = (long) ((1-Constans.w_q)*avg + Constans.w_q*q);
+			avg = ((1-Constans.w_q)*avg + Constans.w_q*q);
 		} else{
 			int i=fTime();
 			for(; i>0; i--){
-				avg = (long) ((1-Constans.w_q)*avg + Constans.w_q*q);
+				avg =((1-Constans.w_q)*avg + Constans.w_q*q);
 			}
 			q_time = Timer.getTime();
 		}
@@ -142,10 +143,19 @@ public class Fred extends Node {
 		if(q==0 && departingPacket){
 			q_time = Timer.getTime();
 		}
+		
 	}
 	
 	private void dropPacket (Packet pckt){
+		if(Timer.getTime() > 10*Constans.second)
+		{
+			Flow packetFlow = flows.get(pckt.sourceNode.getId());
+		//	TCPSource tcp = (TCPSource) pckt.sourceNode;
 		
+			int i = 0;
+			i++;
+			
+		}
 	}
 	
 	private void acceptPacket(Packet pckt){
@@ -154,6 +164,7 @@ public class Fred extends Node {
 		int packetId = pckt.sourceNode.getId();
 		flows.get(packetId).qlen_i++;
 		q++;
+		q += 0;
 	}
 	
 	private int fTime(){
@@ -207,8 +218,10 @@ public class Fred extends Node {
 			//only random drop from robust flows:
 			if(packetFlow.qlen_i >= Math.max(Constans.min_q, avgcq)){
 				//calculate probability p_a:
-				double p_b = Constans.max_p*(avg-Constans.min_th)/(Constans.max_th-Constans.min_th);
+				double p_b = (Constans.max_p*(avg-Constans.min_th))/(Constans.max_th-Constans.min_th);
 				double p_a = p_b/(1 - count*p_b);
+				if(p_a < 0) 
+					p_a=1;
 				if (calculateDropProbability(p_a)){
 					dropPacket(pckt);
 					count = 0;

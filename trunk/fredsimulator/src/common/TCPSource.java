@@ -12,9 +12,9 @@ import java.util.TreeSet;
  */
 
 public class TCPSource extends Node {
-	
+
 	private int windowSize;
-	
+
 	Long sequenceNumber;
 
 	/**
@@ -23,13 +23,13 @@ public class TCPSource extends Node {
 	 * val - time
 	 */
 	TreeMap <Long, Long > sentPackets;
-	
+
 	/**
 	 * mapa przechowujaca informacje o potwierdzonych pakietach
 	 * p
-	*/
+	 */
 	TreeSet <Long> ackedPackets;
-	
+
 	public TCPSource(int id) {
 		super(id);
 		sentPackets = new TreeMap<Long, Long>();
@@ -48,21 +48,21 @@ public class TCPSource extends Node {
 				return;
 			}			
 		}
-		
-/*		if(sentPackets.size() + ackedPackets.size() < windowSize)
+
+		/*		if(sentPackets.size() + ackedPackets.size() < windowSize)
 		{//jezeli jeszcze nie przekroczono okna
 			sendPacket();
 		}
-	*/
+		 */
 		if(sentPackets.size()< windowSize)
 		{//jezeli jeszcze nie przekroczono okna
 			sendPacket();
 		}
-		
+
 	}
-	
+
 	private void sendPacket() {
-		
+
 		if(!links.first().isBusy())
 		{//jezeli link jest wolny
 			TCPPacket packet = new TCPPacket(this, Constans.tcp_packet_size,sequenceNumber++);
@@ -74,7 +74,7 @@ public class TCPSource extends Node {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	private void slowDown() {
@@ -100,25 +100,32 @@ public class TCPSource extends Node {
 			ackedPackets.add(sn);
 		}
 		System.out.println(this + " ackedPackets.size() " + ackedPackets.size() + " windowSize "+ windowSize + " sentPackets.size() " + sentPackets.size());
-/*		if(ackedPackets.size() == windowSize && sentPackets.size() == 0)
+		/*		if(ackedPackets.size() == windowSize && sentPackets.size() == 0)
 		{//potwierdzono wszystkie z okna
 			windowSize++;
 			sentPackets.clear();
 			ackedPackets.clear();
 		}
-*/
-		if(ackedPackets.size() == windowSize)
+		 */
+		if(ackedPackets.size() >= windowSize)
 		{
 			boolean windowAckped = true;
 			Long[] ackedList =	ackedPackets.toArray(new Long[0]);
-			for (int i = 0; i < ackedList.length; i++) {
-				if(ackedList[i] > sentPackets.firstKey())
-				{
-					windowAckped = false;
-					break;
+			if(sentPackets.size() == 0)
+			{
+				windowAckped = false;
+			}
+			else
+			{
+				for (int i = 0; i < ackedList.length; i++) {
+					if(ackedList[i] > sentPackets.firstKey())
+					{
+						windowAckped = false;
+						break;
+					}
 				}
 			}
-			
+
 			if(windowAckped)
 			{
 				System.out.println(this + " windowAckped. sentPackets: " + sentPackets + "  ackedPackets: " + ackedPackets);  
@@ -126,9 +133,9 @@ public class TCPSource extends Node {
 				windowSize++;
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * @return the windowSize
 	 */
