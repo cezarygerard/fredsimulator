@@ -184,7 +184,15 @@ public class RED extends Node {
 			dropPacket(pckt);
 			return;
 		}
-
+		
+		if(q>= Constans.buffer_size)
+		{
+			//drop-tail mode
+			count = 0;
+			dropPacket(pckt);
+			return;
+		}
+		
 		calculateAvg();
 		acceptPacket(pckt);
 	}

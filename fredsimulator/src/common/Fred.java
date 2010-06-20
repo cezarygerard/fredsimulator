@@ -232,6 +232,16 @@ public class Fred extends Node {
 			dropPacket(pckt);
 			return;
 		}
+		
+		if(q>= Constans.buffer_size)
+		{
+			//drop-tail mode
+			count = 0;
+			dropPacket(pckt);
+			return;
+		}
+		
+		
 		if (packetFlow.qlen_i == 0){
 			Nactive++;
 		}
