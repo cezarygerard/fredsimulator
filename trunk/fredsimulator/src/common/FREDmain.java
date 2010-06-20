@@ -17,14 +17,13 @@ public class FREDmain {
 		//long seconds = 1000000;
 		nodes = new ArrayList<Node>();
 		links = new ArrayList<Link>();
-		///tworzenie sieci testowej:
-		//FakeNode fake = new FakeNode(0);
+
 		Fred fred = new Fred(0);
 		UDPSource udpSource = new UDPSource(1,  (long) (Constans.link_speed)); 
 		TCPSource tcpSource1 = new TCPSource(2);
 		TCPSource tcpSource2 = new TCPSource(3);
 		TCPSource tcpSource3 = new TCPSource(4);
-		Sink sink = new Sink(4);
+		Sink sink = new Sink(4); 
 		
 		//nodes.add(fake);
 		nodes.add(fred);
@@ -33,10 +32,8 @@ public class FREDmain {
 		nodes.add(tcpSource2);
 		nodes.add(tcpSource3);
 		nodes.add(sink);
-//		Link link1 = new Link(udpSource, fake, (int) ((Constans.second)/100),  10 * 1000 * 1000);
-//		Link link2 = new Link(fake, sink, (int) ((Constans.second)/100), 10 * 1000 * 1000 );
-//		Link link3 = new Link(tcpSource1, fake, (int) ((Constans.second)/100), 100 * 1000 * 1000 );
-		Link link1 = new Link(udpSource, fred, (int) ((Constans.second)/100),   Constans.link_speed);
+
+		Link link1 = new Link(udpSource, fred, (int) ((Constans.second)/100), Constans.link_speed);
 		Link link2 = new Link(fred, sink, (int) ((Constans.second)/100),  2*Constans.link_speed );
 		Link link3 = new Link(tcpSource1, fred, (int) ((Constans.second)/100),  Constans.link_speed );
 		Link link4 = new Link(tcpSource2, fred, (int) ((Constans.second)/100), Constans.link_speed );
@@ -47,9 +44,37 @@ public class FREDmain {
 		links.add(link3);
 		links.add(link4);
 		links.add(link5);
-		long time = 0;
+//-------------------------WEZLY DO FREDA--------------------------------	
+		RED red = new RED(5);
+		UDPSource udpSource6 = new UDPSource(6,  (long) (Constans.link_speed)); 
+		TCPSource tcpSource7 = new TCPSource(7);
+		TCPSource tcpSource8 = new TCPSource(8);
+		TCPSource tcpSource9 = new TCPSource(9);
+		Sink sink2 = new Sink(10);
+		
+		//nodes.add(fake);
+		nodes.add(red);
+		nodes.add(udpSource6);
+		nodes.add(tcpSource7);
+		nodes.add(tcpSource8);
+		nodes.add(tcpSource9);
+		nodes.add(sink2);
 
-		while ((time = Timer.increment())<90 * Constans.second)
+		Link link6 = new Link(udpSource6, red, (int) ((Constans.second)/100), Constans.link_speed);
+		Link link7 = new Link(red, sink2, (int) ((Constans.second)/100),  2*Constans.link_speed );
+		Link link8 = new Link(tcpSource7, red, (int) ((Constans.second)/100),  Constans.link_speed );
+		Link link9 = new Link(tcpSource8, red, (int) ((Constans.second)/100), Constans.link_speed );
+		Link link10 = new Link(tcpSource9, red, (int) ((Constans.second)/100), Constans.link_speed );
+
+		links.add(link6);
+		links.add(link7);
+		links.add(link8);
+		links.add(link9);
+		links.add(link10);
+//-------------------------~~WEZLY DO FREDA--------------------------------
+
+		long time = 0;	
+		while ((time = Timer.increment())<120 * Constans.second)
 		{
 			for (Iterator<Node> iterator = nodes.iterator(); iterator.hasNext();) {
 			Node node = (Node) iterator.next();

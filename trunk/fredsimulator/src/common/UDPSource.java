@@ -8,7 +8,7 @@ public class UDPSource extends Node {
 		super(id);
 		modulo = (int) ((Constans.udp_packet_size * 8 * Constans.second)/bitrate);
 		this.timeToStart = (long)( Math.random()*Constans.timeToStart);
-
+		this.name = "UDPSource";
 	}
 
 	public void handle(long time) {

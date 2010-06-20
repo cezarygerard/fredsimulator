@@ -13,13 +13,16 @@ public abstract class Node {
 	 * nodeId, Link
 	 */
 	TreeSet<Link> links;
-
+	
+	String name;
+	
 	final int id;
 
 	public Node(int nodeId) {
 		super();
 		links = new TreeSet<Link>();
 		this.id = nodeId;
+		name = nodeId + new String();
 	}
 
 	public int getId() {
