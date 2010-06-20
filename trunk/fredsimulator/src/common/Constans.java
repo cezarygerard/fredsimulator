@@ -45,4 +45,6 @@ public class Constans {
 	public static final double linkDelayVariation = 0.000 ;
 
 	public static double timeToStart = 5 * second;
+	
+	public static double timeToMesure = 60 * second;
 }
