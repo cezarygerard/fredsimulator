@@ -15,7 +15,7 @@ public class Sink extends Node {
 		super(id);
 		delayToAck = new ArrayList<Pair<Long, Packet>>();
 		try {
-			writer = new FileWriter("logfile.txt");
+			writer = new FileWriter("logfile" + this.id + ".txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -39,12 +39,12 @@ public class Sink extends Node {
 							+ ((TCPSource) element.second.sourceNode)
 									.getWindowSize());
 					try {
-						writer.write("\n"+ Timer.getTime() + this
-								+ " handle element: "
-								+ element.first
+						writer.write("\n"+ Timer.getTime()+";" + this +";"
+								+ " handle element: " +";"
+								+ element.first +";"
 								+ "   "
-								+ element.second
-								+ "source_window_size"
+								+ element.second +";"
+								+ "source_window_size" +";"
 								+ ((TCPSource) element.second.sourceNode)
 										.getWindowSize());
 					} catch (IOException e) {
@@ -62,8 +62,8 @@ public class Sink extends Node {
 	public void enquePacket(Packet pckt) {
 		System.out.println(this.getClass() + " przyszedl pakiet: " + pckt);
 		try {
-			writer.write("\n" + Timer.getTime() + "  " + this.getClass()
-					+ " przyszedl pakiet: " + pckt);
+			writer.write("\n" + Timer.getTime() +";" + "  " +";" + this.getClass()
+					+ " przyszedl pakiet: " + ";" + pckt);
 			writer.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -73,7 +73,7 @@ public class Sink extends Node {
 			// uwaga, tutaj od razu dodawany jest znacznik - czas w ktorym ma
 			// byc wywolane ack
 			delayToAck.add((new Pair<Long, Packet>(new Long(Timer.getTime()
-					+ Constans.rtt / 2), pckt)));
+					- ((TCPPacket)pckt).sentTime), pckt)));
 		}
 	}
 }

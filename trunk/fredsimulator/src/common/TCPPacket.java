@@ -11,9 +11,12 @@ public class TCPPacket extends Packet {
 
 	long sequenceNumber;
 
+	long  sentTime;
+	
 	public TCPPacket(Node sourceNoude, int size,long sequenceNumber) {
 		super(sourceNoude, size);
 		this.sequenceNumber = sequenceNumber;
+		sentTime = Timer.getTime();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -25,6 +28,6 @@ public class TCPPacket extends Packet {
 	}
 	
 	public String toString() {
-		return super.toString() + " sequenceNumber: " + sequenceNumber;
+		return super.toString() +";" + "senttime: " + sentTime + "; sequenceNumber: " +";" + sequenceNumber;
 	}
 }
