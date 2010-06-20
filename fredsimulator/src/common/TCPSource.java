@@ -43,7 +43,7 @@ public class TCPSource extends Node {
 	}
 
 	public void handle(long time) {
-		if(time > timeToStart)
+		if(time > this.timeToStart)
 		{
 			for (Iterator<Long> iterator = sentPackets.keySet().iterator(); iterator.hasNext();) {
 				long seq = (Long) iterator.next();

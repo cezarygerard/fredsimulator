@@ -12,7 +12,7 @@ public class UDPSource extends Node {
 	}
 
 	public void handle(long time) {
-		if(time > timeToStart)
+		if(time > this.timeToStart)
 		{
 			if(Timer.getTime()% modulo == 0){
 				UDPPacket packet = new UDPPacket(this, Constans.udp_packet_size);

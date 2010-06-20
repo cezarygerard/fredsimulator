@@ -34,18 +34,9 @@ public class Sink extends Node {
 							+ "source_window_size"
 							+ ((TCPSource) element.second.sourceNode)
 							.getWindowSize());
-					try {
-						writers.get(element.second.sourceNode.id).write("\n"+ Timer.getTime()+";" + this +";"
-								+ " handle element: " +";"
-								+ element.first +";"
-								+ "   "
-								+ element.second +";"
-								+ "source_window_size" +";"
-								+ ((TCPSource) element.second.sourceNode)
-								.getWindowSize());
-					} catch (IOException e) {
+					if(Timer.getTime() > Constans.timeToMesure)
+					{
 						try {
-							writers.put(element.second.sourceNode.id, new FileWriter("logfile_" + this.id + "_" + element.second.sourceNode.name + "_" + element.second.sourceNode.id + ".txt"));
 							writers.get(element.second.sourceNode.id).write("\n"+ Timer.getTime()+";" + this +";"
 									+ " handle element: " +";"
 									+ element.first +";"
@@ -54,11 +45,23 @@ public class Sink extends Node {
 									+ "source_window_size" +";"
 									+ ((TCPSource) element.second.sourceNode)
 									.getWindowSize());
+						} catch (IOException e) {
+							try {
+								writers.put(element.second.sourceNode.id, new FileWriter("logfile_" + this.id + "_" + element.second.sourceNode.name + "_" + element.second.sourceNode.id + ".txt"));
+								writers.get(element.second.sourceNode.id).write("\n"+ Timer.getTime()+";" + this +";"
+										+ " handle element: " +";"
+										+ element.first +";"
+										+ "   "
+										+ element.second +";"
+										+ "source_window_size" +";"
+										+ ((TCPSource) element.second.sourceNode)
+										.getWindowSize());
 
 
-						} catch (Exception e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							} catch (Exception e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
 						}
 					}
 				} else {
@@ -71,21 +74,24 @@ public class Sink extends Node {
 
 	public void enquePacket(Packet pckt) {
 		System.out.println(this.getClass() + " przyszedl pakiet: " + pckt);
-		try {
-			writers.get(pckt.sourceNode.id).write("\n" + Timer.getTime() +";" + "  " +";" + this.getClass()
-					+ " przyszedl pakiet: " + ";" + pckt);
-			writers.get(pckt.sourceNode.id).flush();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+		if(Timer.getTime() > Constans.timeToMesure)
+		{
 			try {
-				writers.put(pckt.sourceNode.id, new FileWriter("logfile_" + this.id + "_" + pckt.sourceNode.name + "_" + pckt.sourceNode.id + ".txt"));
-
 				writers.get(pckt.sourceNode.id).write("\n" + Timer.getTime() +";" + "  " +";" + this.getClass()
 						+ " przyszedl pakiet: " + ";" + pckt);
 				writers.get(pckt.sourceNode.id).flush();
-			} catch (IOException e1) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				try {
+					writers.put(pckt.sourceNode.id, new FileWriter("logfile_" + this.id + "_" + pckt.sourceNode.name + "_" + pckt.sourceNode.id + ".txt"));
+
+					writers.get(pckt.sourceNode.id).write("\n" + Timer.getTime() +";" + "  " +";" + this.getClass()
+							+ " przyszedl pakiet: " + ";" + pckt);
+					writers.get(pckt.sourceNode.id).flush();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}
 		if (pckt instanceof TCPPacket) {
