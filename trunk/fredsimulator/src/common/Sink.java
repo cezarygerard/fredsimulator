@@ -34,7 +34,7 @@ public class Sink extends Node {
 							+ "source_window_size"
 							+ ((TCPSource) element.second.sourceNode)
 							.getWindowSize());
-					if(Timer.getTime() > Constans.timeToMesure)
+					if(Timer.getTime() > Constans.timeStartToMesure)
 					{
 						try {
 							writers.get(element.second.sourceNode.id).write("\n"+ Timer.getTime()+";" + this +";"
@@ -74,7 +74,7 @@ public class Sink extends Node {
 
 	public void enquePacket(Packet pckt) {
 		System.out.println(this.getClass() + " przyszedl pakiet: " + pckt);
-		if(Timer.getTime() > Constans.timeToMesure)
+		if(Timer.getTime() > Constans.timeStartToMesure)
 		{
 			try {
 				writers.get(pckt.sourceNode.id).write("\n" + Timer.getTime() +";" + "  " +";" + this.getClass()

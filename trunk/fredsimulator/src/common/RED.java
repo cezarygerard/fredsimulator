@@ -56,9 +56,9 @@ public class RED extends Node {
 			q--;
 //			departPacket(departingPacket);
 
-				System.out.println(this + " sendPacket");
+				System.out.println(this + " sendPacket " + Timer.getTime());
 				try {
-					links.first().placeInLink(departingPacket);
+					this.outLink.placeInLink(departingPacket);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

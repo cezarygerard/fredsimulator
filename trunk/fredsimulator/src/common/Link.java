@@ -68,8 +68,12 @@ public class Link implements Comparable<Link> {
 		this.destination = destination;
 		this.delay = delay;
 		this.bitrate = bitrate;
-		source.links.add(this);
-		destination.links.add(this);
+		boolean a = source.links.add(this);
+		boolean b = destination.links.add(this);
+		if(a==false)
+		{
+			b =false;
+		}
 		isBusy = false;
 		timeTofree = 0;
 		delayList = new LinkedList<Pair<Long, Packet>>();
@@ -164,10 +168,22 @@ public class Link implements Comparable<Link> {
 			return 1;
 		} else if (this.destination.getId() < o.destination.getId()) {
 			return -1;
-		} else if (this.destination.getId() < o.destination.getId()) {
+		} else if (this.destination.getId() > o.destination.getId()) {
 			return 1;
 		} else {
 			return 0;
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Link [bitrate=" + bitrate + ", delay=" + delay + ", delayList="
+				+ delayList + ", destination=" + destination + ", isBusy="
+				+ isBusy + ", rand=" + rand + ", source=" + source
+				+ ", timeTofree=" + timeTofree + "]";
+	}
+	
 }
