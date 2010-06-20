@@ -61,17 +61,15 @@ public class Fred extends Node {
 	@Override
 	public void handle(long time) {
 		if(outLink == null){
-			Link temp = links.first();
-			boolean while_flag = true;
-			while(while_flag && temp!=null){
-				if (temp.getSource().equals(this)){
-					while_flag=false;
-					outLink=temp;
-				} else{
-					temp = links.higher(temp);
-				}
+			outLink = links.first();		
+			while(!(outLink.getDestination() instanceof Sink))
+			{
+				outLink = links.higher(outLink);
 			}
-			if (temp == null){System.out.println("cos tu nie gra....");}			
+			if (outLink == null)
+			{
+				System.out.println("cos tu nie gra....");
+			}			
 		}
 	//	if(Timer.getTime()% modulo == 0 && !outLink.isBusy() && !buffer.isEmpty()){
 		if(!outLink.isBusy() && !buffer.isEmpty()){
@@ -79,9 +77,9 @@ public class Fred extends Node {
 			q--;
 			departPacket(departingPacket);
 
-				System.out.println(this + " sendPacket");
+				System.out.println(this + " sendPacket" + Timer.getTime());
 				try {
-					links.first().placeInLink(departingPacket);
+					this.outLink.placeInLink(departingPacket);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
