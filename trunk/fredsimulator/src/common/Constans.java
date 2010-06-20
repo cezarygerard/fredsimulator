@@ -20,7 +20,7 @@ public class Constans {
 	
 	public static final int rtt = (int) (second / 25) ; //w us
 	
-	public static final double max_p = 0.05; //w jednostkach
+	public static final double max_p = 0.02; //w jednostkach
 	
 	public static final int min_q = 2; // w pakietach
 	
@@ -44,5 +44,5 @@ public class Constans {
 	
 	public static final double linkDelayVariation = 0.000 ;
 
-	public static double timeToStart = 1 * second;
+	public static double timeToStart = 5 * second;
 }
