@@ -14,15 +14,15 @@ import java.util.TreeSet;
 public class TCPSource extends Node {
 
 	private int windowSize;
-
+	long rtt;
 	Long sequenceNumber;
-
+	long timeToStart;
 	/**
 	 * mapa przechowujaca informacje o wyslanych i nie potwierdzonych pakietach
 	 * key - seqnum
 	 * val - time
 	 */
-	TreeMap <Long, Long > sentPackets;
+	TreeMap <Long, TCPPacket > sentPackets;
 
 	/**
 	 * mapa przechowujaca informacje o potwierdzonych pakietach
@@ -32,33 +32,40 @@ public class TCPSource extends Node {
 
 	public TCPSource(int id) {
 		super(id);
-		sentPackets = new TreeMap<Long, Long>();
+		sentPackets = new TreeMap<Long, TCPPacket>();
 		ackedPackets = new TreeSet<Long>();	
 		sequenceNumber = (long)0;
 		windowSize = Constans.tcp_window;
+		this.rtt = Constans.rtt;
+		this.timeToStart = (long)( Math.random()*Constans.timeToStart);
+		int i=0;
 	}
 
 	public void handle(long time) {
-		for (Iterator<Long> iterator = sentPackets.keySet().iterator(); iterator.hasNext();) {
-			long seq = (Long) iterator.next();
-			if(  sentPackets.get(seq) < time )
-			{
-				System.out.println(this + "handle slowdown");
-				slowDown();
-				return;
-			}			
-		}
+		if(time > timeToStart)
+		{
+			for (Iterator<Long> iterator = sentPackets.keySet().iterator(); iterator.hasNext();) {
+				long seq = (Long) iterator.next();
+				long a = sentPackets.get(seq).sentTime;
+				TCPPacket b = sentPackets.get(seq);
+				if(  sentPackets.get(seq).sentTime + this.rtt * 2< time )
+				{
+					System.out.println(this + "handle slowdown");
+					slowDown();
+					return;
+				}			
+			}
 
-		/*		if(sentPackets.size() + ackedPackets.size() < windowSize)
+			/*		if(sentPackets.size() + ackedPackets.size() < windowSize)
 		{//jezeli jeszcze nie przekroczono okna
 			sendPacket();
 		}
-		 */
-		if(sentPackets.size()< windowSize)
-		{//jezeli jeszcze nie przekroczono okna
-			sendPacket();
+			 */
+			if(sentPackets.size()< windowSize)
+			{//jezeli jeszcze nie przekroczono okna
+				sendPacket();
+			}
 		}
-
 	}
 
 	private void sendPacket() {
@@ -69,7 +76,7 @@ public class TCPSource extends Node {
 			System.out.println(this + " sendPacket " + " sentPackets " + sentPackets + " ackedPackets " + ackedPackets + Timer.getTime());
 			try {
 				links.first().placeInLink(packet);
-				sentPackets.put(packet.sequenceNumber,(long) Timer.getTime() + Constans.rtt * 2);
+				sentPackets.put(packet.sequenceNumber,packet);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -95,9 +102,12 @@ public class TCPSource extends Node {
 	 * @param sn sequence number pakietu
 	 */
 	public void handleAck (long sn){
-		if(sentPackets.remove(sn) != null)
+		if(sentPackets.containsKey(sn))
 		{//jezeli pakiet jest w sentPackets to nie minal timeout
+			this.rtt = Timer.getTime() - sentPackets.remove(sn).sentTime;
+			//sentPackets.remove(sn) != null
 			ackedPackets.add(sn);
+
 		}
 		System.out.println(this + " ackedPackets.size() " + ackedPackets.size() + " windowSize "+ windowSize + " sentPackets.size() " + sentPackets.size());
 		/*		if(ackedPackets.size() == windowSize && sentPackets.size() == 0)

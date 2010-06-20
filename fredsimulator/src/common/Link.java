@@ -117,10 +117,13 @@ public class Link implements Comparable<Link> {
 			if (isBusy == false) {
 				delayList.add(new Pair<Long, Packet>(new Long(
 						delay), p));
-				int ranV = rand.nextInt() %(int)( delay * Constans.linkDelayVariation);
+				int ranV = 0;
+				if(Constans.linkDelayVariation != 0.0)
+				{
+					ranV = rand.nextInt() %(int)( delay * Constans.linkDelayVariation);
+				}
+				
 				timeTofree = 8 * p.size * Constans.second / this.bitrate + ranV;
-				int i;
-				i=5;
 			} else {
 				throw new Exception(
 						"Lacze zajete - trwa wysylanie innego pakietu");

@@ -17,7 +17,7 @@ public class Fred extends Node {
 	int count; //number of packets since last drop
 	double avgcq; //average per-flow queue size
 	long max_q; //maximum allowed per-flow queue size
-	int Nactive;  // number of active flows
+	double Nactive;  // number of active flows
 	long q_time;
 	Link outLink; // link ktory wychodzi z wezla fred
 	//Timer timer;
@@ -205,7 +205,7 @@ public class Fred extends Node {
 		}
 		
 		//identify and manage non-adaptive flows:
-		if((packetFlow.qlen_i >= max_q) || (avg >= Constans.max_th && packetFlow.qlen_i > 2*avgcq) || (packetFlow.qlen_i >= avgcq && packetFlow.strike_i > 1)){
+		if((packetFlow.qlen_i >= max_q) || (avg >= Constans.max_th && packetFlow.qlen_i > 2*avgcq) || (packetFlow.qlen_i >= avgcq  && packetFlow.strike_i > 1)){
 			packetFlow.strike_i++;
 			dropPacket(pckt);
 			return;
