@@ -39,6 +39,7 @@ public class TCPSource extends Node {
 		this.rtt = Constans.rtt;
 		this.timeToStart = (long)( Math.random()*Constans.timeToStart);
 		int i=0;
+		this.name = "TCPSource";
 	}
 
 	public void handle(long time) {
@@ -53,7 +54,7 @@ public class TCPSource extends Node {
 					System.out.println(this + "handle slowdown");
 					slowDown();
 					return;
-				}			
+				}
 			}
 
 			/*		if(sentPackets.size() + ackedPackets.size() < windowSize)

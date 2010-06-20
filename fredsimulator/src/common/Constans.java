@@ -14,13 +14,13 @@ public class Constans {
 	 */
 	public static final double second = 100*1000; 
 
-	public static final double w_q = 0.002; // w jednostkach
+	public static final double w_q = 0.01; // w jednostkach
 	
 	public static final int link_speed = 10*1000*1000; //w bajtach
 	
 	public static final int rtt = (int) (second / 25) ; //w us
 	
-	public static final double max_p = 0.02; //w jednostkach
+	public static final double max_p = 0.05; //w jednostkach
 	
 	public static final int min_q = 2; // w pakietach
 	
