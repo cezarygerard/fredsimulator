@@ -19,7 +19,7 @@ public class FREDmain {
 		links = new ArrayList<Link>();
 
 		Fred fred = new Fred(0);
-		TCPSource tcpSource0 = new TCPSource(0); 
+		UDPSource udpSource0 = new UDPSource(0, (long) (0.8 * Constans.link_speed)); 
 		TCPSource tcpSource1 = new TCPSource(1); 
 		TCPSource tcpSource2 = new TCPSource(2); 
 		TCPSource tcpSource3 = new TCPSource(3); 
@@ -32,7 +32,7 @@ public class FREDmain {
 		
 		//nodes.add(fake);
 		nodes.add(fred);
-		nodes.add(tcpSource0);
+		nodes.add(udpSource0);
 		nodes.add(tcpSource1);
 		nodes.add(tcpSource2);
 		nodes.add(tcpSource3);
@@ -42,7 +42,7 @@ public class FREDmain {
 //		nodes.add(tcpSource3);
 		nodes.add(sink);
 
-		Link link0 = new Link(tcpSource0, fred, (int) ((Constans.second)/500), Constans.link_speed);
+		Link link0 = new Link(udpSource0, fred, (int) ((Constans.second)/500), Constans.link_speed);
 		Link link1 = new Link(tcpSource1, fred, (int) ((Constans.second)/500), Constans.link_speed);
 		Link link2 = new Link(tcpSource2, fred, (int) ((Constans.second)/500), Constans.link_speed);
 		Link link3 = new Link(tcpSource3, fred, (int) ((Constans.second)/500), Constans.link_speed);
@@ -60,7 +60,7 @@ public class FREDmain {
 		links.add(link5);
 //-------------------------WEZLY DO REDA--------------------------------	
 		RED red = new RED(0);
-		TCPSource tcpSource10 = new TCPSource(10); 
+		UDPSource udpSource10 = new UDPSource(10, (long) (0.8 * Constans.link_speed)); 
 		TCPSource tcpSource11 = new TCPSource(11); 
 		TCPSource tcpSource12 = new TCPSource(12); 
 		TCPSource tcpSource13 = new TCPSource(13); 
@@ -73,7 +73,7 @@ public class FREDmain {
 		
 		//nodes.add(fake);
 		nodes.add(red);
-		nodes.add(tcpSource10);
+		nodes.add(udpSource10);
 		nodes.add(tcpSource11);
 		nodes.add(tcpSource12);
 		nodes.add(tcpSource13);
@@ -83,7 +83,7 @@ public class FREDmain {
 //		nodes.add(tcpSource3);
 		nodes.add(sink2);
 		
-		Link link10 = new Link(tcpSource10, red, (int) ((Constans.second)/500), Constans.link_speed);
+		Link link10 = new Link(udpSource10, red, (int) ((Constans.second)/500), Constans.link_speed);
 		Link link11 = new Link(tcpSource11, red, (int) ((Constans.second)/500), Constans.link_speed);
 		Link link12 = new Link(tcpSource12, red, (int) ((Constans.second)/500), Constans.link_speed);
 		Link link13 = new Link(tcpSource13, red, (int) ((Constans.second)/500), Constans.link_speed);
