@@ -87,6 +87,7 @@ public class TCPSource extends Node {
 
 	private void slowDown() {
 		windowSize = (2 > windowSize/2 ? 2: windowSize/2 );
+//		this.rtt = Constans.rtt;
 		try{
 			sequenceNumber = sentPackets.firstKey();
 			sentPackets.clear();
@@ -102,12 +103,14 @@ public class TCPSource extends Node {
 	/** metoda wywolywana przez klase Sink aby poinformowac o tym ze pakiet dotarl
 	 * @param sn sequence number pakietu
 	 */
-	public void handleAck (long sn){
-		if(sentPackets.containsKey(sn))
+	public void handleAck (TCPPacket packet){
+		if(sentPackets.containsKey(packet.sequenceNumber))
 		{//jezeli pakiet jest w sentPackets to nie minal timeout
-			this.rtt = Timer.getTime() - sentPackets.remove(sn).sentTime;
+			sentPackets.remove(packet.sequenceNumber);
+			this.rtt = Timer.getTime() - packet.sentTime;
+			//this.rtt = Timer.getTime() - sentPackets.remove(sn).sentTime;
 			//sentPackets.remove(sn) != null
-			ackedPackets.add(sn);
+			ackedPackets.add(packet.sequenceNumber);
 
 		}
 		System.out.println(this + " ackedPackets.size() " + ackedPackets.size() + " windowSize "+ windowSize + " sentPackets.size() " + sentPackets.size());
