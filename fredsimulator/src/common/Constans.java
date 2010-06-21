@@ -46,6 +46,6 @@ public class Constans {
 
 	public static double timeToStart = 5 * second;
 	
-	public static double timeStartToMesure = 60 * second;
-	public static double timeToMesure = 360 * second;
+	public static double timeStartToMesure = 30 * second;
+	public static double timeToMesure = 330 * second;
 }

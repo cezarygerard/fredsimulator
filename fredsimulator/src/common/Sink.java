@@ -98,7 +98,7 @@ public class Sink extends Node {
 			// uwaga, tutaj od razu dodawany jest znacznik - czas w ktorym ma
 			// byc wywolane ack
 			delayToAck.add((new Pair<Long, Packet>(new Long(Timer.getTime()
-					- ((TCPPacket)pckt).sentTime), pckt)));
+					+ ((TCPPacket)pckt).sentTime), pckt)));
 		}
 	}
 }
