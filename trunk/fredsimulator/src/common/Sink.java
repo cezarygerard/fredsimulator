@@ -23,7 +23,7 @@ public class Sink extends Node {
 			Pair<Long, Packet> element = delayToAck.get(i);
 			if (element.first <= time) {
 				((TCPSource) element.second.sourceNode)
-				.handleAck(((TCPPacket) element.second).sequenceNumber);
+				.handleAck(((TCPPacket) element.second));
 				delayToAck.remove(i);
 				if (element.second instanceof TCPPacket) {
 					System.out.println(this
@@ -45,7 +45,7 @@ public class Sink extends Node {
 									+ "source_window_size" +";"
 									+ ((TCPSource) element.second.sourceNode)
 									.getWindowSize());
-						} catch (IOException e) {
+						} catch (Exception e) {
 							try {
 								writers.put(element.second.sourceNode.id, new FileWriter("logfile_" + this.id + "_" + element.second.sourceNode.name + "_" + element.second.sourceNode.id + ".txt"));
 								writers.get(element.second.sourceNode.id).write("\n"+ Timer.getTime()+";" + this +";"
@@ -97,8 +97,8 @@ public class Sink extends Node {
 		if (pckt instanceof TCPPacket) {
 			// uwaga, tutaj od razu dodawany jest znacznik - czas w ktorym ma
 			// byc wywolane ack
-			delayToAck.add((new Pair<Long, Packet>(new Long(Timer.getTime()
-					+ ((TCPPacket)pckt).sentTime), pckt)));
+			delayToAck.add((new Pair<Long, Packet>(new Long(2 * Timer.getTime()
+					- ((TCPPacket)pckt).sentTime), pckt)));
 		}
 	}
 }
